@@ -1,0 +1,48 @@
+# PHPStorm, IntelliJ IDEA and other JetBrains IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+*.log
+
+# Composer dependencies
+/vendor/
+
+# PHPUnit test results and logs
+.phpunit.result.cache
+phpunit.xml
+phpunit.xml.dist
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# MacOS files
+*.DS_Store
+
+# Windows files
+*.cab
+*.msi
+*.lnk
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE specific files
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Laravel specific
+storage/
+bootstrap/cache/
+
+# Symfony specific
+var/
+
+# Cache directories
+/cache/

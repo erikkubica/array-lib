@@ -1,0 +1,25 @@
+{
+    "name": "erikkubica/array-lib",
+    "description": "Helps with arrays",
+    "type": "library",
+    "license": "GPL",
+    "autoload": {
+        "psr-4": {
+            "ErikKubica\\ArrayLib\\": "src/",
+            "ErikKubica\\tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": false
+    },
+    "authors": [
+        {
+            "name": "Erik Kubica",
+            "email": "erik.kubica@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require-dev": {
+        "phpunit/phpunit": "^11.3"
+    }
+}
