@@ -93,7 +93,56 @@ final class ArrayUtilTest extends TestCase
         );
         $this->assertEquals('Not Found', $name);
 
+        // Test getting filtered resulting array
+        $goodKids = ArrayUtil::getValueFromPath(
+            array: $array,
+            path: '0.children',
+            filters: [
+                0 => ArrayUtil::createPathFilter(
+                    path: 'name',
+                    value: 'John Alone',
+                    compare: Comparison::EQ
+                ),
+                2 => ArrayUtil::createPathFilter(
+                    path: 'name',
+                    value: 'Good Kid',
+                    compare: Comparison::EQ
+                )
+            ]
+        );
 
+        $this->assertCount(1, $goodKids);
+        $this->assertEquals('Good Kid', $goodKids[0]['name']);
+
+        // Test getting filtered resulting specific item
+        $goodKids = ArrayUtil::getValueFromPath(
+            array: $array,
+            path: '0.children.0',
+            filters: [
+                0 => ArrayUtil::createPathFilter(
+                    path: 'name',
+                    value: 'John Alone',
+                    compare: Comparison::EQ
+                ),
+                2 => ArrayUtil::createPathFilter(
+                    path: 'name',
+                    value: 'Good Kid',
+                    compare: Comparison::EQ
+                )
+            ]
+        );
+
+        $this->assertEquals('Good Kid', $goodKids['name']);
+    }
+
+    public function testCreatePathFilter(): void
+    {
+        $filter = ArrayUtil::createPathFilter('name', 'Erik');
+
+        $this->assertTrue($filter(['name' => 'Erik']));
+        $this->assertFalse($filter(['name' => 'Not Erik']));
+
+        // Test some filtering of data
         $filter = ArrayUtil::createPathFilter('user.profile.age', 21, Comparison::GE);
 
         $array = [
@@ -106,13 +155,5 @@ final class ArrayUtilTest extends TestCase
 
         $this->assertCount(2, $filteredArray);
         $this->assertEquals(25, $filteredArray[0]['user']['profile']['age']);
-    }
-
-    public function testCreatePathFilter(): void
-    {
-        $filter = ArrayUtil::createPathFilter('name', 'Erik');
-
-        $this->assertTrue($filter(['name' => 'Erik']));
-        $this->assertFalse($filter(['name' => 'Not Erik']));
     }
 }

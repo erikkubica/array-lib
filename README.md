@@ -117,6 +117,104 @@ $filteredArray = array_filter($array, $filter);
 print_r($filteredArray); // Outputs: Array ( [1] => Array ( [user] => Array ( [profile] => Array ( [age] => 30 ) ) ) )
 ```
 
+### More complex examples with combination of getValueFromPath and pathFilters
+
+
+
+```php
+$array = [
+    [
+        'id' => 1,
+        'name' => 'John Parent',
+        'children' => [
+            [
+                'id' => 2,
+                'name' => 'Freeloader Child',
+            ],
+            [
+                'id' => 3,
+                'name' => 'Older Freeloader Child',
+            ],
+        ]
+    ],
+    [
+        'id' => 4,
+        'name' => 'John Alone',
+        'children' => [
+            [
+                'id' => 5,
+                'name' => 'Good Kid',
+            ],
+            [
+                'id' => 6,
+                'name' => 'Bad Kid',
+            ],
+        ]
+    ]
+];
+
+$name = ArrayUtil::getValueFromPath(
+    array: $array,
+    path: '0.children.0.name',
+    filters: [
+        0 => ArrayUtil::createPathFilter(
+            path: 'name',
+            value: 'John Alone',
+            compare: Comparison::EQ
+        ),
+        2 => ArrayUtil::createPathFilter(
+            path: 'name',
+            value: 'Good Kid',
+            compare: Comparison::EQ
+        )
+    ]
+);
+
+print_r($name); // Outputs: Good Kid
+
+// or retrieve the whole item:
+
+$goodKid = ArrayUtil::getValueFromPath(
+    array: $array,
+    path: '0.children.0',
+    filters: [
+        0 => ArrayUtil::createPathFilter(
+            path: 'name',
+            value: 'John Alone',
+            compare: Comparison::EQ
+        ),
+        2 => ArrayUtil::createPathFilter(
+            path: 'name',
+            value: 'Good Kid',
+            compare: Comparison::EQ
+        )
+    ]
+);
+
+print_r( $goodKid ); // Outputs: Array ( [id] => 5 [name] => Good Kid )
+
+// or get all kids that are good kids
+$goodKids = ArrayUtil::getValueFromPath(
+    array: $array,
+    path: '0.children',
+    filters: [
+        0 => ArrayUtil::createPathFilter(
+            path: 'name',
+            value: 'John Alone',
+            compare: Comparison::EQ
+        ),
+        2 => ArrayUtil::createPathFilter(
+            path: 'name',
+            value: 'Good Kid',
+            compare: Comparison::EQ
+        )
+    ]
+);
+
+print_r($goodKids); // Outputs: Array ( [0] => Array ( [id] => 5 [name] => Good Kid ) )
+
+```
+
 ## Requirements
 
 - PHP 7.4 or higher
