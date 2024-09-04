@@ -92,6 +92,20 @@ final class ArrayUtilTest extends TestCase
             default: 'Not Found'
         );
         $this->assertEquals('Not Found', $name);
+
+
+        $filter = ArrayUtil::createPathFilter('user.profile.age', 21, Comparison::GE);
+
+        $array = [
+            ['user' => ['profile' => ['age' => 20]]],
+            ['user' => ['profile' => ['age' => 25]]],
+            ['user' => ['profile' => ['age' => 30]]]
+        ];
+
+        $filteredArray = array_values(array_filter($array, $filter));
+
+        $this->assertCount(2, $filteredArray);
+        $this->assertEquals(25, $filteredArray[0]['user']['profile']['age']);
     }
 
     public function testCreatePathFilter(): void
